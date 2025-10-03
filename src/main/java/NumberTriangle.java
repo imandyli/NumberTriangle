@@ -125,7 +125,7 @@ public class NumberTriangle {
 
         String line = br.readLine();
         while (line != null) {
-            String[] numbers = line.split(" +");
+            String[] numbers = line.split("\\s+");
             NumberTriangle[] levelnow = new NumberTriangle[numbers.length];
             for (int i = 0; i < numbers.length; i++) {
                 int value = Integer.parseInt(numbers[i]);
