@@ -156,4 +156,4 @@ public class NumberTriangle {
         System.out.println(mt.getRoot());
     }
 }
-// Completed PR test
+// Completed the part 2
