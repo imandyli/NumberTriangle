@@ -88,8 +88,16 @@ public class NumberTriangle {
      *
      */
     public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
+        NumberTriangle current = this;
+        for (int i = 0; i < path.length(); i++) {
+            String step =path.substring(i, i + 1);
+            if (step.equals("l")) {
+                current = current.left;}
+            else if (step.equals("r")) {
+                current = current.right;
+            }
+        }
+        return current.getRoot();
     }
 
     /** Read in the NumberTriangle structure from a file.
@@ -109,22 +117,28 @@ public class NumberTriangle {
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
-
-        // TODO define any variables that you want to use to store things
-
-        // will need to return the top of the NumberTriangle,
-        // so might want a variable for that.
         NumberTriangle top = null;
+        NumberTriangle[] prev = null;
 
         String line = br.readLine();
         while (line != null) {
-
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
-
-            // TODO process the line
-
-            //read the next line
+            String[] numbers = line.split(" +");
+            NumberTriangle[] levelnow = new NumberTriangle[numbers.length];
+            for (int i = 0; i < numbers.length; i++) {
+                int value = Integer.parseInt(numbers[i]);
+                NumberTriangle node = new NumberTriangle(value);
+                levelnow[i] = node;
+                if (prev == null) {
+                    top = node;
+                } else {if (i < prev.length) {
+                    prev[i].setLeft(node);
+                }
+                    if (i > 0) {
+                        prev[i - 1].setRight(node);
+                    }
+                }
+            }
+            prev = levelnow;
             line = br.readLine();
         }
         br.close();
