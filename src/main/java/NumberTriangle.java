@@ -115,9 +115,6 @@ public class NumberTriangle {
         // open the file and get a BufferedReader object whose methods
         // are more convenient to work with when reading the file contents.
         InputStream inputStream = NumberTriangle.class.getClassLoader().getResourceAsStream(fname);
-        if (inputStream == null) {
-            throw new IOException("File not found: " + fname);
-        }
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
         NumberTriangle top = null;
@@ -125,29 +122,29 @@ public class NumberTriangle {
 
         String line = br.readLine();
         while (line != null) {
-            String[] numbers = line.split("\\s+");
-            NumberTriangle[] levelnow = new NumberTriangle[numbers.length];
-            for (int i = 0; i < numbers.length; i++) {
-                int value = Integer.parseInt(numbers[i]);
-                NumberTriangle node = new NumberTriangle(value);
-                levelnow[i] = node;
-                if (prev == null) {
-                    top = node;
-                } else {if (i < prev.length) {
-                    prev[i].setLeft(node);
-                }
-                    if (i > 0) {
-                        prev[i - 1].setRight(node);
-                    }
+            String s = line.trim();
+
+            if (s.isEmpty()){
+                line = br.readLine();
+                continue;}
+            String[] parts = s.split("\\s+");
+            NumberTriangle[] level = new NumberTriangle[parts.length];
+            for (int i=0; i < parts.length; i++){
+                level[i] = new NumberTriangle(Integer.parseInt(parts[i]));
+            }
+            if (top == null) {
+                top = level[0];
+            }
+            if (prev != null){
+                for (int j=0; j<prev.length; j++){
+                    prev[j].setLeft(level[j]);
+                    prev[j].setRight(level[j+1]);
                 }
             }
-            prev = levelnow;
+            prev = level;
             line = br.readLine();
         }
         br.close();
-        if (top == null) {
-            throw new IOException("No numbers found in file: " + fname);
-        }
         return top;
     }
 
